@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "./Input";
 import List from "./List";
 import styled from "styled-components";
@@ -8,7 +8,9 @@ const Container = styled.div`
 `;
 
 const Home = () => {
-  const [list, setList] = useState([]);
+  const localList = JSON.parse(localStorage.getItem("list"));
+
+  const [list, setList] = useState(localList);
 
   const add = (value) => {
     const item = {
@@ -18,6 +20,11 @@ const Home = () => {
     };
     setList((prevlist) => [...prevlist, item]);
   };
+
+  useEffect(() => {
+    if (!list) return;
+    localStorage.setItem("list", JSON.stringify(list));
+  }, [list]);
 
   const deleteFunction = (id) => {
     let deleteIndex;
@@ -43,6 +50,11 @@ const Home = () => {
     setList(temp);
   };
 
+  const clearAll = () => {
+    const temp = [];
+    setList(temp);
+  };
+
   return (
     <Container>
       <Input add={add} />
@@ -50,6 +62,7 @@ const Home = () => {
         list={list}
         deleteFunction={deleteFunction}
         doneFunction={doneFunction}
+        clearAll={clearAll}
       />
     </Container>
   );

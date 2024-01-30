@@ -1,8 +1,10 @@
 import React from "react";
-//import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 const Container = styled.div`
   display: flex;
@@ -50,11 +52,68 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const List = ({ list, deleteFunction, doneFunction }) => {
-  //const [popUp, setPopUp] = useState(false);
+const DeleteBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  margin-bottom: 10px;
+  margin-left: 90%;
+  margin-right: 10px;
+  height: 40px;
+  width: 50px;
+  cursor: pointer;
+  padding: 0px;
+`;
 
-  const handleDelete = (id) => {
-    deleteFunction(id);
+const PopupOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PopupContent = styled.div`
+  background-color: lightgrey;
+  position: "relative";
+  margin: "50px auto";
+  height: 100px;
+  width: 100px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PopButton = styled.button`
+  height: 40px;
+  margin-bottom: "20px";
+  width: 60px;
+  margin-top: 10px;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px black;
+  cursor: pointer;
+`;
+
+const CloseBtn = styled.button`
+  position: "absolute";
+  margin-left: 70%;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+`;
+
+const List = ({ list, deleteFunction, doneFunction, clearAll }) => {
+  const [popUp, setPopUp] = useState(false);
+  const [itemClickId, setItemClickId] = useState();
+
+  const handleDelete = () => {
+    deleteFunction(itemClickId);
   };
 
   const handleClick = (id) => {
@@ -62,14 +121,37 @@ const List = ({ list, deleteFunction, doneFunction }) => {
     doneFunction(id);
   };
 
-  /*const handlePopUp = () => {
-    setPopUp(true);
-  };*/
+  const handleDeleteAll = () => {
+    clearAll();
+  };
+
+  const handlePopUp = () => {
+    setPopUp(!popUp);
+  };
+
+  useEffect(() => {
+    if (popUp) {
+      setTimeout(() => {
+        setPopUp(false);
+      }, 1000);
+    } else {
+      setItemClickId(null);
+    }
+    return clearTimeout();
+  }, [popUp]);
+
+  const iconStyle = {
+    fontSize: "15px",
+  };
 
   return (
     <Container>
       <Wrapper>
         <UL>
+          <DeleteBtn onClick={(e) => handleDeleteAll()}>
+            <DeleteSweepOutlinedIcon />
+          </DeleteBtn>
+
           {list.map((item) => {
             return (
               <LI key={item.id} isDone={item.isDone}>
@@ -77,13 +159,33 @@ const List = ({ list, deleteFunction, doneFunction }) => {
                 <Button onClick={(e) => handleClick(item.id)}>
                   <CheckOutlinedIcon />
                 </Button>
-                <Button onClick={() => handleDelete(item.id)}>
+                <Button
+                  onClick={() => {
+                    setItemClickId(item.id);
+                    handlePopUp();
+                  }}
+                >
                   <HighlightOffOutlinedIcon />
                 </Button>
               </LI>
             );
           })}
         </UL>
+        {popUp && (
+          <PopupOverlay>
+            <PopupContent>
+              <CloseBtn
+                onClick={(e) => {
+                  handleDelete(itemClickId);
+                  handlePopUp();
+                }}
+              >
+                <CloseOutlinedIcon style={iconStyle} />
+              </CloseBtn>
+              <PopButton onClick={(e) => handlePopUp()}>Undo</PopButton>
+            </PopupContent>
+          </PopupOverlay>
+        )}
       </Wrapper>
     </Container>
   );
