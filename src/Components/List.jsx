@@ -13,19 +13,19 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  border: 2px solid lightgrey;
+  border: 2px solid #3e3232;
   margin-top: 20px;
   width: 40%;
   max-height: 300px;
   overflow-y: scroll;
   border-radius: 10px;
-  box-shadow: 0px 0px 8px lightgray;
+  box-shadow: 0px 0px 8px #3e3232;
 `;
 
 const UL = styled.ul``;
 
 const LI = styled.li`
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid #3e3232;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -77,7 +77,7 @@ const PopupOverlay = styled.div`
 `;
 
 const PopupContent = styled.div`
-  background-color: lightgrey;
+  background-color: #3e3232;
   position: "relative";
   margin: "50px auto";
   height: 100px;
@@ -125,7 +125,7 @@ const List = ({ list, deleteFunction, doneFunction, clearAll }) => {
     clearAll();
   };
 
-  const handlePopUp = () => {
+  const handlePopUp = (id) => {
     setPopUp(!popUp);
   };
 
@@ -133,7 +133,7 @@ const List = ({ list, deleteFunction, doneFunction, clearAll }) => {
     if (popUp) {
       setTimeout(() => {
         setPopUp(false);
-      }, 1000);
+      }, 10000);
     } else {
       setItemClickId(null);
     }

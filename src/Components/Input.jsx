@@ -12,10 +12,10 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border-bottom: 2px solid lightgrey;
+  border-bottom: 2px solid #3e3232;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  box-shadow: 0px 0px 8px lightgray;
+  box-shadow: 0px 0px 8px #3e3232;
 `;
 
 const Heading = styled.h1`
@@ -28,18 +28,19 @@ const DateVal = styled.h3`
 `;
 
 const InputWrapper = styled.div`
-  border: 2.5px solid lightgray;
+  border: 2.5px solid #3e3232;
   margin-top: 40px;
   height: 35px;
   width: 40%;
   margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: 0px 0px 8px lightgray;
+  box-shadow: 0px 0px 8px #3e3232;
 `;
 
 const InputContainer = styled.input`
   border: none;
-  margin-left: 10px;
+  width: 90%;
+  background-color: #e5e1da;
   font-size: large;
   padding: 6px;
   &:focus {
